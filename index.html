@@ -39,17 +39,27 @@
 
         .card { background: var(--card-bg); border-radius: 35px; padding: 22px; margin-bottom: 15px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); position: relative; }
         
-        /* CHAT UI */
+        /* CHAT CENTER */
         .coach-card { background: linear-gradient(145deg, #1e293b 0%, #020617 100%); color: white; border-left: 8px solid var(--primary); overflow: hidden; }
         .chat-container { height: 350px; overflow-y: auto; background: rgba(0,0,0,0.4); border-radius: 25px; padding: 15px; font-size: 0.75rem; margin-bottom: 12px; color: #cbd5e1; line-height: 1.5; border: 1px solid rgba(255,255,255,0.1); scroll-behavior: smooth; }
         .chat-bubble { margin-bottom: 12px; padding: 12px; border-radius: 18px; border-left: 4px solid var(--primary); background: rgba(255,255,255,0.05); }
         .chat-bubble.user { border-left: none; border-right: 4px solid var(--indigo); background: rgba(37, 99, 235, 0.1); text-align: right; margin-left: 20px; }
         .thinking-msg { font-size: 0.65rem; color: var(--primary); font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: none; }
 
-        /* ENV SWITCH */
+        /* TOOLS & SELECTORS */
         .env-selector { display: flex; background: rgba(255,255,255,0.1); border-radius: 15px; padding: 4px; margin-bottom: 12px; }
         .env-btn { flex: 1; padding: 10px; border-radius: 12px; border: none; background: none; color: #94a3b8; font-size: 0.6rem; font-weight: 900; cursor: pointer; }
         .env-btn.active { background: white; color: var(--dark); }
+
+        .quick-ops { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
+        .op-btn { flex-shrink: 0; padding: 10px 16px; border-radius: 14px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 0.6rem; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+
+        .tap-test-area { width: 100%; height: 90px; background: var(--dark); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: 900; cursor: pointer; position: relative; overflow: hidden; border: 2px solid var(--epi); margin-bottom: 10px; }
+        .tap-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: var(--secondary); width: 0%; transition: 0.1s linear; }
+
+        .mic-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); }
+        .mic-btn.recording { background: var(--danger); animation: pulseRed 1s infinite; }
+        @keyframes pulseRed { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
         /* GYM ENGINE */
         .protocol-selector { display: flex; gap: 6px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
@@ -59,16 +69,10 @@
         .workout-day-card { background: #f8fafc; border-radius: 30px; padding: 20px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
         .exercise-item { background: white; padding: 15px; border-radius: 22px; margin-bottom: 10px; border: 1px solid #f1f5f9; position: relative; }
         .set-box { height: 45px; border-radius: 15px; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 900; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
-        .set-box.done { background: var(--secondary); border-color: var(--secondary); color: white; transform: scale(0.95); }
+        .set-box.done { background: var(--secondary); border-color: var(--secondary); color: white; }
 
-        /* TOOLS */
-        .mic-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); transition: 0.3s; }
-        .mic-btn.recording { background: var(--danger); animation: pulseRed 1s infinite; }
-        @keyframes pulseRed { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
-        .tap-test-area { width: 100%; height: 90px; background: var(--dark); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: 900; cursor: pointer; position: relative; overflow: hidden; border: 2px solid var(--epi); margin-bottom: 10px; }
-        .tap-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: var(--secondary); width: 0%; transition: 0.1s linear; }
-
+        /* BIO MAP */
+        .anatomy-box { display: flex; justify-content: center; gap: 15px; align-items: center; }
         .body-svg { width: 100px; height: auto; }
         .muscle { fill: #cbd5e1; cursor: pointer; transition: 0.3s; }
         .muscle.sore { fill: var(--pain) !important; }
@@ -81,6 +85,7 @@
 
 <div id="rest-timer" class="timer-overlay">⏱️ <span id="t-min">01</span>:<span id="t-sec">30</span></div>
 
+<!-- SETUP MODAL -->
 <div id="setup-modal">
     <h2 style="font-weight: 900; font-size: 1.8rem; margin-bottom: 20px; text-align: center;">APEX CONFIG</h2>
     <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 30px; display: grid; gap: 15px;">
@@ -92,14 +97,14 @@
             <label style="font-size:0.5rem; font-weight:900; color:#94a3b8;">GRASA % META</label>
             <input type="number" id="setup-f" value="12" style="width:100%; border:none; background:transparent; color:white; font-size:1.2rem; font-weight:900;">
         </div>
-        <button onclick="finishSetup()" style="width:100%; padding:20px; border-radius:20px; border:none; background:var(--primary); color:white; font-weight:900;">INICIAR CEREBRO CHAT</button>
+        <button onclick="finishSetup()" style="width:100%; padding:20px; border-radius:20px; border:none; background:var(--primary); color:white; font-weight:900;">ACTIVAR CEREBRO CHAT</button>
     </div>
 </div>
 
 <div class="container">
     <header><h1>⚡ APEX OMEGA</h1></header>
 
-    <!-- SECTION: CHAT -->
+    <!-- TAB: CHAT (CORE) -->
     <section id="lab" class="section active">
         <div class="card coach-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -112,19 +117,20 @@
                 <button class="env-btn" id="env-street" onclick="setEnvironment('street')" style="flex: 1; padding: 10px; border-radius: 12px; border: none; background: none; color: #94a3b8; font-size: 0.6rem; font-weight: 900; cursor: pointer;">🏢 CALLE</button>
             </div>
 
-            <div class="quick-ops" style="display:flex; gap:8px; overflow-x:auto; margin-bottom:12px; scrollbar-width:none;">
-                <button class="op-btn" onclick="quickCommand('Chat, ¿qué entreno me toca hoy?')">📋 ¿QUÉ TOCA?</button>
+            <div class="quick-ops">
+                <button class="op-btn" onclick="quickCommand('Chat, ¿qué toca hoy?')">📋 ¿QUÉ TOCA?</button>
                 <button class="op-btn" onclick="quickCommand('Chat, tengo hambre')">🍕 HAMBRE</button>
                 <button class="op-btn" onclick="quickCommand('Chat, armame el plan 42K para X fecha')">🏃 PLAN 42K</button>
+                <button class="op-btn" onclick="quickCommand('Chat, lista de súper barata')">🛒 SÚPER</button>
             </div>
 
             <div class="tap-test-area" onclick="runTapTest()">
-                <span id="tap-msg" style="font-size:0.65rem;">🧠 SNC READINESS (Medir fatiga)</span>
+                <span id="tap-msg" style="font-size:0.65rem;">🧠 SNC READINESS (Toca para medir)</span>
                 <div class="tap-progress" id="tap-progress"></div>
             </div>
             
             <div class="chat-container" id="chat-box">
-                <div class="chat-bubble coach">Instancia Sovereign iniciada. <br><br>Dime tu actividad ("Chat, hoy corrí 10km") o pídeme ajustar tu sesión. Soy tu consultor híbrido con memoria total.</div>
+                <div class="chat-bubble coach">Instancia Sovereign iniciada. <br><br>Dime tu actividad ("Chat, hoy corrí 10km") o pídeme ajustar tu sesión. Soy tu consultor híbrido con memoria total de tus metas.</div>
             </div>
 
             <div id="thinking-indicator" class="thinking-msg">Calculando biomecánica y metabolismo...</div>
@@ -140,12 +146,12 @@
             <div class="card-title">👁️ Visión Cybernetic</div>
             <input type="file" id="image-upload" accept="image/*" style="display:none" onchange="handleVisualScan(event)">
             <div id="scan-preview" onclick="document.getElementById('image-upload').click()" style="width:100%; height:100px; background:#000; border-radius:24px; display:flex; align-items:center; justify-content:center; color:white; border:2px dashed var(--primary); cursor:pointer;">
-                <span style="font-size:0.6rem; font-weight:800;">Subir Plato o Biometría</span>
+                <span style="font-size:0.6rem; font-weight:800;">Subir Plato o Técnica</span>
             </div>
         </div>
     </section>
 
-    <!-- SECTION: GYM -->
+    <!-- TAB: GYM -->
     <section id="workout" class="section">
         <div class="protocol-selector">
             <button class="proto-btn active" id="btn-base" onclick="setProtocol('base')">8x8 Master</button>
@@ -156,7 +162,7 @@
         <div id="gym-render"></div>
     </section>
 
-    <!-- SECTION: BIO -->
+    <!-- TAB: BIO -->
     <section id="bio" class="section">
         <div class="card" style="background: #f0fdf4; border: 1px solid #bbf7d0; display:flex; justify-content:space-around; text-align:center;">
             <div><label style="font-size:0.5rem; font-weight:900; color:#166534">MAGRO</label><div style="font-size:1.1rem; font-weight:900;" id="kpi-muscle">0 kg</div><div id="ffmi-val" style="font-size:0.6rem; font-weight:800; color:var(--primary)">FFMI: --</div></div>
@@ -177,18 +183,18 @@
 
         <div class="card">
             <h2 class="card-title">🔐 Bóveda Apex (Mail)</h2>
-            <input type="email" id="user-email" placeholder="atleta@mail.com" style="width:100%; padding:14px; border-radius:18px; border:2px solid var(--border); margin-bottom:12px;">
+            <input type="email" id="user-email" placeholder="atleta@mail.com" style="width:100%; padding:14px; border-radius:18px; border:1px solid var(--border); margin-bottom:12px;">
             <button onclick="syncCloud()" class="btn-primary" style="background:var(--dark)">CONECTAR IDENTIDAD</button>
         </div>
         
         <div class="card">
-            <h2 class="card-title">Check-in kg</h2>
-            <input type="number" id="log-w" step="0.1" style="width:100%; padding:14px; border-radius:18px; border:2px solid var(--border); margin-bottom:10px;">
+            <h2 class="card-title">Peso Diario kg</h2>
+            <input type="number" id="log-w" step="0.1" style="width:100%; padding:14px; border-radius:18px; border:1px solid var(--border); margin-bottom:10px;">
             <button onclick="saveMedicion()" class="btn-primary" style="background:var(--accent)">EJECUTAR DIAGNÓSTICO</button>
         </div>
     </section>
 
-    <!-- NAV INFERIOR -->
+    <!-- NAV -->
     <div class="bottom-nav">
         <button class="nav-btn active" onclick="tab('lab')"><span class="icon">💬</span>Chat</button>
         <button class="nav-btn" onclick="tab('workout')"><span class="icon">💪</span>Gym</button>
@@ -207,7 +213,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const apiKey = ""; 
-    const appId = "apex-sovereign-master-v3";
+    const appId = "apex-sovereign-final-v3";
 
     window.state = {
         week: 1, activeProtocol: 'base', env: 'home',
@@ -218,7 +224,7 @@
 
     window.onload = async () => {
         updateClock(); setInterval(updateClock, 30000);
-        const local = localStorage.getItem('apex_sovereign_master_v3');
+        const local = localStorage.getItem('apex_sovereign_final_v3');
         if (local) {
             window.state = JSON.parse(local);
             if (window.state.email) await syncCloud();
@@ -233,7 +239,7 @@
     }
 
     function save() {
-        localStorage.setItem('apex_sovereign_master_v3', JSON.stringify(window.state));
+        localStorage.setItem('apex_sovereign_final_v3', JSON.stringify(window.state));
         if (window.state.email && auth.currentUser) {
             const safe = window.state.email.replace(/[.@]/g, '_');
             setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', safe), window.state);
@@ -254,7 +260,7 @@
         updatePainUI();
     };
 
-    // PILLAR: CHAT ENGINE
+    // PILLAR: SOVEREIGN CHAT CORE
     window.processChat = async () => {
         const input = document.getElementById('chat-input');
         const box = document.getElementById('chat-box');
@@ -267,14 +273,15 @@
         thinking.style.display = "block";
 
         const hr = new Date().getHours();
-        const context = `ERES "CHAT", LA IA SOBERANA DE ESTE ATLETA HÍBRIDO.
-        CONOCIMIENTOS: Gironda 8x8, Hyrox, 42K Endurance, DUP, Wendler 5/3/1, Saciedad Argentina, TDEE Dinámico.
+        const context = `ERES "CHAT", LA INSTANCIA SOBERANA DE IA DE ESTE ATLETA HÍBRIDO.
+        KNOWLEDGE: Gironda 8x8, Hyrox, 42K Endurance, DUP, Wendler 5/3/1, Saciedad Argentina, TDEE Dinámico.
         CONTEXTO ATLETA: ${window.state.weights.body}kg, ${window.state.weights.fCurr}% grasa. SNC: ${window.state.sncScore}. Entorno: ${window.state.env}. Hora: ${hr}hs.
+        HORARIOS COMIDA ATLETA: Desayuno (8-9), Almuerzo (13-14), Merienda (17-19), Cena (21-23).
         REGLAS:
         1. Memoria: Conoces al atleta. No pidas datos que ya tienes.
         2. Actividad: Si reporta futbol/running/correr, regístralo como gasto calórico. 
         3. Hambre: Comida real barata argentina cruzando hora con ventana circadiana.
-        4. Tono: Científico, técnico, veloz y motivador.`;
+        4. Tono: Fuente de verdad científica, técnico, veloz y motivador.`;
 
         try {
             const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
@@ -283,7 +290,7 @@
             });
             const data = await resp.json();
             thinking.style.display = "none";
-            const reply = data.candidates[0].content.parts[0].text;
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Chat: Intenta de nuevo.";
             box.innerHTML += `<div class="chat-bubble coach">${reply}</div>`;
             box.scrollTop = box.scrollHeight;
             speakResponse(reply);
@@ -365,8 +372,8 @@
                 body: JSON.stringify({ contents: [{ parts: [{ text: text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } }, model: "gemini-2.5-flash-preview-tts" })
             });
             const data = await resp.json();
-            const pcm = data.candidates[0].content.parts[0].inlineData.data;
-            if(pcm) new Audio(URL.createObjectURL(new Blob([new Uint8Array(atob(pcm).split("").map(c => c.charCodeAt(0)))], { type: 'audio/wav' }))).play();
+            const binary = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+            if(binary) new Audio(URL.createObjectURL(new Blob([new Uint8Array(atob(binary).split("").map(c => c.charCodeAt(0)))], { type: 'audio/wav' }))).play();
         } catch(e) {}
     }
 
@@ -375,8 +382,8 @@
     window.setProtocol = (p) => { window.state.activeProtocol = p; ['base','run','hyrox','custom'].forEach(id => { if(document.getElementById('btn-'+id)) document.getElementById('btn-'+id).classList.toggle('active', id===p); }); save(); renderGym(); };
     window.setEnvironment = (e) => { window.state.env = e; document.getElementById('env-home').style.background = e==='home' ? 'white' : 'none'; document.getElementById('env-home').style.color = e==='home' ? 'var(--dark)' : '#94a3b8'; document.getElementById('env-street').style.background = e==='street' ? 'white' : 'none'; document.getElementById('env-street').style.color = e==='street' ? 'var(--dark)' : '#94a3b8'; save(); };
     window.handleVisualScan = (e) => { const reader = new FileReader(); reader.onloadend = () => { window.state.currentBase64 = reader.result.split(',')[1]; document.getElementById('scan-preview').innerHTML = `<img src="${reader.result}" style="width:100%; height:100%; object-fit:cover;">`; runIAVision(); }; reader.readAsDataURL(e.target.files[0]); };
-    async function runIAVision() { const box = document.getElementById('chat-box'); box.innerHTML += `<div class="chat-bubble coach">IA analizando...</div>`; try { const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [ { text: "Analiza técnica o macros. Sé breve y científico." }, { inlineData: { mimeType: "image/png", data: window.state.currentBase64 } } ] }] }) }); const data = await resp.json(); box.innerHTML += `<div class="chat-bubble coach">${data.candidates[0].content.parts[0].text}</div>`; box.scrollTop = box.scrollHeight; } catch (e) {} };
-    window.toggleSTT = () => { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-AR'; const btn = document.getElementById('mic-btn'); btn.classList.add('recording'); rec.onresult = (e) => { document.getElementById('chat-input').value = e.results[0][0].transcript; btn.classList.remove('recording'); window.processChat(); }; rec.start(); };
+    async function runIAVision() { const box = document.getElementById('chat-box'); box.innerHTML += `<div class="chat-bubble coach">IA analizando píxeles híbridos...</div>`; try { const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [ { text: "Analiza técnica o macros. Sé breve y científico." }, { inlineData: { mimeType: "image/png", data: window.state.currentBase64 } } ] }] }) }); const data = await resp.json(); box.innerHTML += `<div class="chat-bubble coach">${data.candidates[0].content.parts[0].text}</div>`; box.scrollTop = box.scrollHeight; } catch (e) {} };
+    window.toggleSTT = () => { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-AR'; const btn = document.getElementById('mic-btn'); btn.classList.add('recording'); rec.onresult = (e) => { document.getElementById('chat-input').value = e.results[0][0].transcript; btn.classList.remove('recording'); window.processChat(); }; rec.onerror = () => btn.classList.remove('recording'); rec.start(); };
     window.togglePain = (m) => { const i = window.state.pain.indexOf(m); if(i > -1) window.state.pain.splice(i,1); else window.state.pain.push(m); save(); renderAll(); };
     function updatePainUI() { ['neck', 'chest', 'arms', 'legs'].forEach(id => { const el = document.getElementById(`heat-${id}`); if(el) { const zone = id.includes('arms') ? 'brazos' : id.includes('legs') ? 'piernas' : id === 'neck' ? 'cuello' : 'pecho'; el.classList.toggle('sore', window.state.pain.includes(zone)); } }); }
     window.saveMedicion = () => { window.state.weights.body = parseFloat(document.getElementById('log-w').value) || window.state.weights.body; save(); renderAll(); alert("KPI Sincronizado."); };
