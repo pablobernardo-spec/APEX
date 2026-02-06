@@ -28,7 +28,7 @@
         header { text-align: center; color: white; padding: 10px 0; }
         h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; }
 
-        /* NAV SUPERIOR E INFERIOR */
+        /* NAVEGACIÓN INFERIOR */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
         .nav-btn { background: none; border: none; color: #475569; font-size: 0.65rem; font-weight: 800; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; flex: 1; }
         .nav-btn.active { color: white; transform: translateY(-2px); }
@@ -47,7 +47,7 @@
         .input-group label { display: block; font-size: 0.5rem; font-weight: 950; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
         .input-group input { width: 100%; border: none; background: transparent; color: white; font-size: 1.2rem; font-weight: 900; outline: none; }
 
-        /* CHAT CENTER */
+        /* CARDS & CHAT */
         .card { background: var(--card-bg); border-radius: 35px; padding: 22px; margin-bottom: 15px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); position: relative; }
         .coach-card { background: linear-gradient(145deg, #1e293b 0%, #020617 100%); color: white; border-left: 8px solid var(--primary); overflow: hidden; }
         .chat-container { height: 350px; overflow-y: auto; background: rgba(0,0,0,0.4); border-radius: 25px; padding: 15px; font-size: 0.75rem; margin-bottom: 12px; color: #cbd5e1; line-height: 1.5; border: 1px solid rgba(255,255,255,0.1); scroll-behavior: smooth; }
@@ -71,32 +71,40 @@
         .tap-test-area { width: 100%; height: 90px; background: var(--dark); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: 900; cursor: pointer; position: relative; overflow: hidden; border: 2px solid var(--epi); margin-bottom: 10px; }
         .tap-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: var(--secondary); width: 0%; transition: 0.1s linear; }
 
+        .body-svg { width: 120px; height: auto; }
+        .muscle { fill: #cbd5e1; cursor: pointer; transition: 0.3s; }
+        .muscle.sore { fill: var(--pain) !important; }
+
         .btn-primary { width: 100%; padding: 18px; border-radius: 22px; border: none; background: var(--primary); color: white; font-weight: 900; cursor: pointer; font-size: 0.9rem; margin-top: 10px; }
-        .timer-overlay { position: fixed; bottom: 105px; right: 20px; background: var(--dark); color: white; padding: 14px 24px; border-radius: 50px; border: 2px solid var(--primary); z-index: 2000; font-weight: 900; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .timer-overlay { position: fixed; bottom: 105px; right: 20px; background: var(--dark); color: white; padding: 14px 24px; border-radius: 50px; border: 2px solid var(--primary); z-index: 2000; font-weight: 900; display: none; }
     </style>
 </head>
 <body>
 
 <div id="rest-timer" class="timer-overlay">⏱️ <span id="t-min">01</span>:<span id="t-sec">30</span></div>
 
-<!-- PANTALLA DE LOGIN GOOGLE -->
+<!-- PANTALLA DE ACCESO GOOGLE -->
 <div id="auth-overlay">
     <h1 style="font-size: 2.5rem; letter-spacing: -2px; margin-bottom: 10px;">APEX OMEGA</h1>
-    <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 40px; font-weight: 600;">INTELIGENCIA BIOLÓGICA SOBERANA</p>
+    <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 40px; font-weight: 600;">IDENTITY SOVEREIGN AI</p>
     <button class="google-btn" onclick="googleSignIn()">
-        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right: 10px;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         ACCEDER CON GOOGLE
     </button>
 </div>
 
-<!-- SETUP INICIAL -->
+<!-- CONFIGURACIÓN BIOMÉTRICA -->
 <div id="setup-modal">
     <h2 style="font-weight: 900; font-size: 1.8rem; margin-bottom: 10px; text-align: center;">BIOMETRÍA BASE</h2>
-    <p style="font-size: 0.7rem; color: #94a3b8; text-align: center; margin-bottom: 25px;">Sincroniza tus datos para activar la IA.</p>
+    <p style="font-size: 0.7rem; color: #94a3b8; text-align: center; margin-bottom: 25px;">Configura tu perfil de atleta inicial.</p>
     <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 30px; display: grid;">
         <div class="input-group">
             <label>PESO ACTUAL kg</label>
             <input type="number" id="setup-w" value="80" step="0.1">
+        </div>
+        <div class="input-group">
+            <label>ALTURA cm</label>
+            <input type="number" id="setup-h" value="175">
         </div>
         <div class="input-group">
             <label>GRASA % ESTIMADA</label>
@@ -109,7 +117,7 @@
 <div class="container">
     <header><h1>⚡ APEX OMEGA</h1></header>
 
-    <!-- SECTION: CHAT (SOVEREIGN) -->
+    <!-- SECTION: CHAT -->
     <section id="lab" class="section active">
         <div class="card coach-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -117,15 +125,11 @@
                 <div id="user-display" style="font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.4);">ATLETA</div>
             </div>
 
-            <div class="env-selector">
-                <button class="env-btn active" id="env-home" onclick="setEnv('home')">🏠 CASA</button>
-                <button class="env-btn" id="env-street" onclick="setEnv('street')">🏢 CALLE</button>
-            </div>
-
-            <div class="quick-ops" style="display:flex; gap:8px; overflow-x:auto; margin-bottom:12px;">
-                <button class="op-btn" onclick="quickCmd('Chat, ¿qué entreno me toca hoy?')">📋 ¿QUÉ TOCA?</button>
+            <div class="quick-ops" style="display:flex; gap:8px; overflow-x:auto; margin-bottom:12px; scrollbar-width:none;">
+                <button class="op-btn" onclick="quickCmd('Chat, ¿qué toca hoy?')">📋 ¿QUÉ TOCA?</button>
                 <button class="op-btn" onclick="quickCmd('Chat, tengo hambre')">🍕 HAMBRE</button>
                 <button class="op-btn" onclick="quickCmd('Chat, armame el plan 42K')">🏃 PLAN 42K</button>
+                <button class="op-btn" onclick="quickCmd('Chat, lista de súper barata')">🛒 SÚPER</button>
             </div>
 
             <div class="tap-test-area" onclick="runTapTest()">
@@ -134,7 +138,7 @@
             </div>
             
             <div class="chat-container" id="chat-box">
-                <div class="chat-bubble coach">Instancia Soberana iniciada. Tu historial se guarda solo en tu cuenta de Google. <br><br>Si el botón GO no funciona, toca el botón rojo para configurar tu Gemini Key.</div>
+                <div class="chat-bubble coach">Instancia Soberana lista. Tu historial se guarda en tu cuenta de Google. <br><br>Dime tu actividad física o pídeme ajustar tu sesión.</div>
             </div>
 
             <div id="thinking-indicator" class="thinking-msg">Procesando biomecánica...</div>
@@ -145,7 +149,15 @@
                 <button onclick="processChat()" style="background:var(--primary); color:white; border:none; padding:14px 20px; border-radius:18px; font-weight:950;">GO</button>
             </div>
             
-            <button onclick="configKey()" id="api-alert-btn" style="width:100%; background:var(--danger); color:white; border:none; border-radius:12px; padding:8px; font-size:0.5rem; font-weight:900; margin-top:10px; display:none;">CONFIGURAR API KEY</button>
+            <button onclick="configKey()" id="api-alert-btn" style="width:100%; background:var(--danger); color:white; border:none; border-radius:12px; padding:8px; font-size:0.5rem; font-weight:900; margin-top:10px; display:none;">CONFIGURAR GEMINI API KEY</button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">👁️ Visión Cybernetic</div>
+            <input type="file" id="image-upload" accept="image/*" style="display:none" onchange="handleVisualScan(event)">
+            <div id="scan-preview" onclick="document.getElementById('image-upload').click()" style="width:100%; height:100px; background:#000; border-radius:24px; display:flex; align-items:center; justify-content:center; color:white; border:2px dashed var(--primary); cursor:pointer;">
+                <span style="font-size:0.6rem; font-weight:800;">Subir Plato o Técnica Biomecánica</span>
+            </div>
         </div>
     </section>
 
@@ -155,7 +167,6 @@
             <button class="proto-btn active" id="btn-base" onclick="setProtocol('base')">8x8 Master</button>
             <button class="proto-btn" id="btn-run" onclick="setProtocol('run')">42K Prep</button>
             <button class="proto-btn" id="btn-hyrox" onclick="setProtocol('hyrox')">Hyrox Mod</button>
-            <button class="proto-btn" id="btn-custom" onclick="setProtocol('custom')">IA Custom</button>
         </div>
         <div id="gym-render"></div>
     </section>
@@ -166,27 +177,40 @@
             <div><label style="font-size:0.5rem; font-weight:900; color:#166534">MAGRO</label><div style="font-size:1.1rem; font-weight:900;" id="kpi-muscle">0 kg</div><div id="ffmi-val" style="font-size:0.6rem; font-weight:800; color:var(--primary)">FFMI: --</div></div>
             <div><label style="font-size:0.5rem; font-weight:900; color:var(--danger)">GRASA %</label><div style="font-size:1.1rem; font-weight:900; color:var(--danger)" id="kpi-fat">0%</div></div>
         </div>
+        
         <div class="card">
-            <h2 class="card-title">👤 Perfil Google</h2>
-            <div id="user-email-display" style="font-size:0.75rem; color:#64748b; margin-bottom:15px;">Iniciando sesión...</div>
+            <div class="card-title">Mapa de Dolor Táctico</div>
+            <div class="anatomy-box">
+                <svg class="body-svg" viewBox="0 0 100 200">
+                    <circle cx="50" cy="20" r="12" class="muscle" id="heat-neck" onclick="togglePain('cuello')" />
+                    <rect x="30" y="35" width="40" height="35" rx="5" class="muscle" id="heat-chest" onclick="togglePain('pecho')" />
+                    <rect x="18" y="38" width="10" height="40" rx="3" class="muscle" id="heat-arms" onclick="togglePain('brazos')" />
+                    <rect x="72" y="38" width="10" height="40" rx="3" class="muscle" id="heat-arms2" onclick="togglePain('brazos')" />
+                    <rect x="32" y="75" width="16" height="60" rx="5" class="muscle" id="heat-legs" onclick="togglePain('piernas')" />
+                    <rect x="52" y="75" width="16" height="60" rx="5" class="muscle" id="heat-legs2" onclick="togglePain('piernas')" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">👤 Sesión</h2>
+            <div id="user-email-display" style="font-size:0.75rem; color:#64748b; margin-bottom:15px;">Conectado</div>
             <button onclick="signOutApex()" class="btn-primary" style="background:var(--dark)">CERRAR SESIÓN</button>
         </div>
-    </section>
-
-    <!-- TAB: DIETA -->
-    <section id="nutrition" class="section">
-        <div class="card" style="background: #fefce8; border: 2px solid var(--accent); text-align:center;">
-            <div style="font-size:0.6rem; font-weight:900; color:#854d0e;">Meta Diaria Adaptativa</div>
-            <div style="font-size:2.2rem; font-weight:950; color:#854d0e;" id="kcal-display">2400</div>
+        
+        <div class="card">
+            <h2 class="card-title">Check-in Peso</h2>
+            <input type="number" id="log-w" step="0.1" style="width:100%; padding:14px; border-radius:18px; border:2px solid var(--border); margin-bottom:10px;">
+            <button onclick="saveMedicion()" class="btn-primary" style="background:var(--accent)">EJECUTAR DIAGNÓSTICO</button>
         </div>
     </section>
 
-    <!-- NAV INFERIOR INDESTRUCTIBLE -->
+    <!-- NAV -->
     <div class="bottom-nav">
-        <button class="nav-btn active" id="nav-lab" onclick="tab(this, 'lab')"><span class="icon">💬</span>Chat</button>
-        <button class="nav-btn" id="nav-workout" onclick="tab(this, 'workout')"><span class="icon">💪</span>Gym</button>
-        <button class="nav-btn" id="nav-bio" onclick="tab(this, 'bio')"><span class="icon">⚖️</span>Bio</button>
-        <button class="nav-btn" id="nav-nutrition" onclick="tab(this, 'nutrition')"><span class="icon">🥗</span>Dieta</button>
+        <button class="nav-btn active" onclick="tab(this, 'lab')"><span class="icon">💬</span>Chat</button>
+        <button class="nav-btn" onclick="tab(this, 'workout')"><span class="icon">💪</span>Gym</button>
+        <button class="nav-btn" onclick="tab(this, 'bio')"><span class="icon">⚖️</span>Bio</button>
+        <button class="nav-btn" onclick="tab(this, 'nutrition')"><span class="icon">🥗</span>Dieta</button>
     </div>
 </div>
 
@@ -195,29 +219,46 @@
     import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    const firebaseConfig = JSON.parse(__firebase_config);
+    // ==========================================================
+    // ⚙️ PASO 1: PEGA AQUÍ TU CONFIGURACIÓN DE FIREBASE
+    // ==========================================================
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY_FIREBASE",
+      authDomain: "TU_ID.firebaseapp.com",
+      projectId: "TU_ID",
+      storageBucket: "TU_ID.appspot.com",
+      messagingSenderId: "TU_SENDER_ID",
+      appId: "TU_APP_ID"
+    };
+    
+    // ==========================================================
+    // 🧠 PASO 2: PEGA AQUÍ TU CLAVE DE GEMINI
+    // ==========================================================
+    let geminiKey = ""; 
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-    const appId = "apex-sovereign-final-v9";
+    const appId = "apex-sovereign-final-master-v1";
     
-    let apiKey = ""; 
     let user = null;
-
-    window.state = {
-        week: 1, activeProtocol: 'base', env: 'home',
-        weights: { sq: 100, bp: 80, body: 0, h: 175, fCurr: 15, goal: 2400 },
-        customRoutine: null, runPlan: null, doneSets: {}, pain: [], setupDone: false, sncScore: 0
+    window.state = { 
+        setupDone: false, 
+        weights: { body: 80, h: 175, fCurr: 15, goal: 2400 }, 
+        sncScore: 0, 
+        activeProtocol: 'base', 
+        doneSets: {}, 
+        pain: [],
+        env: 'home'
     };
 
-    // --- LOGIN ENGINE ---
+    // --- LOGIN ---
     window.googleSignIn = async () => {
         try {
             await signInWithPopup(auth, provider);
         } catch (e) {
-            console.error(e);
-            alert("Error de Google. Verifica dominios autorizados en Firebase.");
+            alert("Error: Autoriza el dominio de Vercel en Firebase > Auth > Settings.");
         }
     };
 
@@ -246,85 +287,109 @@
         }
     });
 
-    window.onload = () => {
-        const savedKey = localStorage.getItem('apex_api_key');
-        if (savedKey) apiKey = savedKey;
-        else if(!apiKey) document.getElementById('api-alert-btn').style.display = 'block';
-        renderAll();
+    // --- NAVEGACIÓN ---
+    window.tab = (btn, id) => {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        const target = document.getElementById(id);
+        if (target) target.classList.add('active');
+        if (btn) btn.classList.add('active');
+        window.scrollTo(0, 0);
     };
 
-    window.configKey = () => {
-        const k = prompt("Ingresa Gemini API Key:");
-        if (k) { apiKey = k; localStorage.setItem('apex_api_key', k); document.getElementById('api-alert-btn').style.display = 'none'; }
+    // --- BIOMETRÍA ---
+    window.finishSetup = () => {
+        window.state.weights.body = parseFloat(document.getElementById('setup-w').value);
+        window.state.weights.h = parseFloat(document.getElementById('setup-h').value);
+        window.state.weights.fCurr = parseFloat(document.getElementById('setup-f').value);
+        window.state.setupDone = true;
+        save();
+        document.getElementById('setup-modal').style.display = 'none';
     };
+
+    function renderAll() {
+        renderGym();
+        const w = window.state.weights.body, f = window.state.weights.fCurr, h = window.state.weights.h;
+        const musc = (w - (w*(f/100))).toFixed(1);
+        document.getElementById('kpi-muscle').innerText = `${musc} kg`;
+        document.getElementById('kpi-fat').innerText = `${f} %`;
+        document.getElementById('ffmi-val').innerText = `FFMI: ${(musc / Math.pow(h/100, 2)).toFixed(1)}`;
+        updatePainUI();
+    }
 
     function save() {
         if (!user) return;
         setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data'), window.state);
     }
 
-    window.finishSetup = () => {
-        window.state.weights.body = parseFloat(document.getElementById('setup-w').value);
-        window.state.weights.fCurr = parseFloat(document.getElementById('setup-f').value);
-        window.state.setupDone = true;
-        document.getElementById('setup-modal').style.display = 'none';
-        save(); renderAll();
-    };
-
-    // --- NAVEGACIÓN INDESTRUCTIBLE ---
-    window.tab = (btn, id) => {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if (btn) btn.classList.add('active');
-        window.scrollTo(0, 0);
-    };
-
-    // PILLAR: CHAT CORE
+    // --- MOTOR DE CHAT ---
     window.processChat = async () => {
-        if (!apiKey) return alert("Configura la API Key primero.");
+        if (!geminiKey) return alert("Configura la Gemini Key primero.");
         const input = document.getElementById('chat-input');
         const box = document.getElementById('chat-box');
         const thinking = document.getElementById('thinking-indicator');
-        let query = input.value; if(!query) return;
+        const query = input.value; if(!query) return;
 
         box.innerHTML += `<div class="chat-bubble user">${query}</div>`;
-        input.value = ""; box.scrollTop = box.scrollHeight;
         thinking.style.display = "block";
-
-        const context = `ERES "CHAT", LA IA SOBERANA DEL ATLETA ${user.displayName}. 
-        ATLETA: ${window.state.weights.body}kg, ${window.state.weights.fCurr}% grasa. SNC: ${window.state.sncScore}. Entorno: ${window.state.env}.
-        PROTOCOLOS: 8x8 Gironda, Hyrox, 42K Endurance, DUP, Wendler, Saciedad Argentina.
+        input.value = ""; box.scrollTop = box.scrollHeight;
+        
+        const context = `ERES "CHAT", LA INSTANCIA SOBERANA DE IA DEL ATLETA ${user.displayName}. 
+        DATOS: ${window.state.weights.body}kg, ${window.state.weights.fCurr}% grasa. SNC: ${window.state.sncScore}. Dolores: ${window.state.pain.join(',')}.
+        KNOWLEDGE: Gironda 8x8, Hyrox, 42K Endurance, DUP, Wendler, Saciedad Argentina, TDEE Dinámico.
         REGLAS: Técnico, motivador, directo.`;
 
         try {
-            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiKey}`, {
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ contents: [{ parts: [{ text: `${context} | CONSULTA: ${query}` }] }] })
             });
             const data = await resp.json();
             thinking.style.display = "none";
-            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Chat: Intenta de nuevo.";
+            const reply = data.candidates[0].content.parts[0].text;
             box.innerHTML += `<div class="chat-bubble coach">${reply}</div>`;
             box.scrollTop = box.scrollHeight;
             speak(reply);
-        } catch (e) { thinking.style.display = "none"; box.innerHTML += `<div class="chat-bubble coach" style="color:var(--danger)">Error de conexión.</div>`; }
+        } catch (e) {
+            thinking.style.display = "none";
+            box.innerHTML += `<div class="chat-bubble coach" style="color:var(--danger)">Error de conexión con la IA.</div>`;
+        }
     };
 
     window.quickCmd = (cmd) => { document.getElementById('chat-input').value = cmd; window.processChat(); };
 
-    // GYM & SNC
+    // --- GYM & SNC ---
     function renderGym() {
         const container = document.getElementById('gym-render');
         const p = window.state.activeProtocol;
         if(p === 'run' && window.state.runPlan) { container.innerHTML = `<div class="workout-day-card" style="white-space:pre-wrap; font-size:0.7rem;">${window.state.runPlan}</div>`; return; }
         const days = [{id:'sq', n:'D1: Piernas (8x8)'}, {id:'bp', n:'D2: Mirror (8x8)'}];
-        container.innerHTML = days.map(day => `<div class="workout-day-card"><h3>${day.n}</h3><div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:12px;">${Array(5).fill().map((_,i) => `<div class="set-box ${window.state.doneSets[day.id+i] ? 'done' : ''}" onclick="toggleSet('${day.id+i}')">${i+1}</div>`).join('')}</div></div>`).join('');
+        container.innerHTML = days.map(day => `
+            <div class="workout-day-card"><h3>${day.n}</h3><div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:12px;">
+                ${Array(5).fill().map((_,i) => `<div class="set-box ${window.state.doneSets[day.id+i] ? 'done' : ''}" onclick="toggleSet('${day.id+i}')">${i+1}</div>`).join('')}
+            </div></div>`).join('');
     }
 
-    window.toggleSet = (k) => { window.state.doneSets[k] = !window.state.doneSets[k]; if(window.state.doneSets[k]) startTimer(); save(); renderGym(); };
-    function startTimer() { document.getElementById('rest-timer').style.display='block'; let t = 90; const ti = setInterval(() => { t--; document.getElementById('t-min').innerText = Math.floor(t/60).toString().padStart(2,'0'); document.getElementById('t-sec').innerText = (t%60).toString().padStart(2,'0'); if(t<=0){clearInterval(ti); document.getElementById('rest-timer').style.display='none';} }, 1000); }
+    window.toggleSet = (k) => { 
+        window.state.doneSets[k] = !window.state.doneSets[k]; 
+        if(window.state.doneSets[k]) startRest();
+        save(); renderGym(); 
+    };
 
+    function startRest() {
+        document.getElementById('rest-timer').style.display='block';
+        let t = 90;
+        const ti = setInterval(() => {
+            t--;
+            document.getElementById('t-min').innerText = Math.floor(t/60).toString().padStart(2,'0');
+            document.getElementById('t-sec').innerText = (t%60).toString().padStart(2,'0');
+            if(t<=0){ clearInterval(ti); document.getElementById('rest-timer').style.display='none'; }
+        }, 1000);
+    }
+
+    window.setProtocol = (p) => { window.state.activeProtocol = p; renderGym(); save(); };
+
+    // --- SNC TEST ---
     let tapCount = 0, tapActive = false;
     window.runTapTest = () => {
         if(tapActive) { tapCount++; return; }
@@ -334,32 +399,39 @@
         let time = 0;
         const int = setInterval(() => {
             time += 100; prog.style.width = (time/5000)*100 + "%";
-            if(time >= 5000) { clearInterval(int); tapActive = false; window.state.sncScore = tapCount; msg.innerText = `SNC SCORE: ${tapCount}`; prog.style.width = "0%"; quickCmd(`Chat, mi SNC fue ${tapCount}.`); save(); }
+            if(time >= 5000) {
+                clearInterval(int); tapActive = false;
+                window.state.sncScore = tapCount;
+                msg.innerText = `SNC SCORE: ${tapCount}`; prog.style.width = "0%";
+                save(); quickCmd(`Chat, mi SNC Score hoy fue de ${tapCount}. Analiza.`);
+            }
         }, 100);
     };
 
-    function renderKPIs() {
-        const w = window.state.weights.body, f = window.state.weights.fCurr;
-        const musc = (w - (w*(f/100))).toFixed(1);
-        document.getElementById('kpi-muscle').innerText = `${musc} kg`;
-        document.getElementById('kpi-fat').innerText = `${f} %`;
-        document.getElementById('ffmi-val').innerText = `FFMI: ${(musc / Math.pow(window.state.weights.h/100, 2)).toFixed(1)}`;
-        document.getElementById('kcal-display').innerText = window.state.weights.goal;
+    // --- AUDIO ---
+    function pcmToWav(pcmData, sampleRate = 24000) {
+        const buffer = new ArrayBuffer(44 + pcmData.length);
+        const view = new DataView(buffer);
+        const writeString = (offset, string) => { for (let i = 0; i < string.length; i++) view.setUint8(offset + i, string.charCodeAt(i)); };
+        writeString(0, 'RIFF'); view.setUint32(4, 32 + pcmData.length, true); writeString(8, 'WAVE'); writeString(12, 'fmt ');
+        view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true); view.setUint16(34, 16, true); writeString(36, 'data'); view.setUint32(40, pcmData.length, true);
+        const pcmView = new Uint8Array(buffer, 44); pcmView.set(pcmData);
+        return new Blob([buffer], { type: 'audio/wav' });
     }
 
     async function speak(text) {
         try {
-            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${geminiKey}`, {
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ contents: [{ parts: [{ text: text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } }, model: "gemini-2.5-flash-preview-tts" })
             });
             const data = await resp.json();
             const b64 = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
             if(b64) {
-                const binary = atob(b64);
-                const bytes = new Uint8Array(binary.length);
-                for (let i=0; i<binary.length; i++) bytes[i] = binary.charCodeAt(i);
-                new Audio(URL.createObjectURL(new Blob([bytes], { type: 'audio/wav' }))).play();
+                const pcm = new Uint8Array(atob(b64).split("").map(c => c.charCodeAt(0)));
+                new Audio(URL.createObjectURL(pcmToWav(pcm))).play();
             }
         } catch(e) {}
     }
@@ -372,17 +444,57 @@
         rec.start();
     };
 
-    window.setProtocol = (p) => { window.state.activeProtocol = p; save(); renderGym(); };
-    window.setEnv = (e) => { window.state.env = e; document.querySelectorAll('.env-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); save(); };
+    window.configKey = () => {
+        const k = prompt("Ingresa Gemini API Key:");
+        if (k) { geminiKey = k; localStorage.setItem('apex_api_key', k); document.getElementById('api-alert-btn').style.display = 'none'; }
+    };
+
+    window.onload = () => {
+        const savedKey = localStorage.getItem('apex_api_key');
+        if (savedKey) { geminiKey = savedKey; }
+        else if(!geminiKey) document.getElementById('api-alert-btn').style.display = 'block';
+    };
+
     window.handleVisualScan = (e) => {
         const reader = new FileReader();
         reader.onloadend = () => { window.state.currentBase64 = reader.result.split(',')[1]; runIAVision(); };
         reader.readAsDataURL(e.target.files[0]);
     };
-    async function runIAVision() { const box = document.getElementById('chat-box'); box.innerHTML += `<div class="chat-bubble coach">Escaneando...</div>`; try { const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [ { text: "Analiza técnica o macros. Sé breve." }, { inlineData: { mimeType: "image/png", data: window.state.currentBase64 } } ] }] }) }); const data = await resp.json(); box.innerHTML += `<div class="chat-bubble coach">${data.candidates[0].content.parts[0].text}</div>`; box.scrollTop = box.scrollHeight; } catch (e) {} };
-    window.togglePain = (m) => { const i = window.state.pain.indexOf(m); if(i > -1) window.state.pain.splice(i,1); else window.state.pain.push(m); save(); renderAll(); };
-    function updatePainUI() { ['neck', 'chest', 'arms', 'legs'].forEach(id => { const el = document.getElementById(`heat-${id}`); if(el) { const zone = id.includes('arms') ? 'brazos' : id.includes('legs') ? 'piernas' : id === 'neck' ? 'cuello' : 'pecho'; el.classList.toggle('sore', window.state.pain.includes(zone)); } }); }
-    window.saveMedicion = () => { window.state.weights.body = parseFloat(document.getElementById('log-w').value) || window.state.weights.body; save(); renderAll(); alert("KPI Sincronizado."); };
+
+    async function runIAVision() {
+        const box = document.getElementById('chat-box');
+        box.innerHTML += `<div class="chat-bubble coach">Escaneando biometría avanzada...</div>`;
+        try {
+            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiKey}`, {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ role: "user", parts: [ { text: "Analiza técnica o macros de forma científica." }, { inlineData: { mimeType: "image/png", data: window.state.currentBase64 } } ] }] })
+            });
+            const data = await resp.json();
+            box.innerHTML += `<div class="chat-bubble coach">${data.candidates[0].content.parts[0].text}</div>`;
+            box.scrollTop = box.scrollHeight;
+        } catch (e) {}
+    }
+
+    window.togglePain = (m) => {
+        const i = window.state.pain.indexOf(m);
+        if(i > -1) window.state.pain.splice(i,1); else window.state.pain.push(m);
+        save(); renderAll();
+    };
+
+    function updatePainUI() {
+        ['neck', 'chest', 'arms', 'legs'].forEach(id => {
+            const el = document.getElementById(`heat-${id}`);
+            if(el) {
+                const zone = id.includes('arms') ? 'brazos' : id.includes('legs') ? 'piernas' : id === 'neck' ? 'cuello' : 'pecho';
+                el.classList.toggle('sore', window.state.pain.includes(zone));
+            }
+        });
+    }
+
+    window.saveMedicion = () => {
+        window.state.weights.body = parseFloat(document.getElementById('log-w').value) || window.state.weights.body;
+        save(); renderAll(); alert("Estado Sincronizado.");
+    };
 
 </script>
 </body>
