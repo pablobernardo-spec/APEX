@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>APEX OMEGA - Sovereign Core</title>
+    <title>APEX OMEGA - Sovereign Identity</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
         
@@ -21,6 +21,7 @@
             background-image: radial-gradient(circle at 0% 0%, #1e3a8a 0%, transparent 25%), 
                               radial-gradient(circle at 100% 100%, #312e81 0%, transparent 25%);
             min-height: 100vh; color: var(--dark); background-attachment: fixed;
+            overflow-x: hidden;
         }
         
         .container { max-width: 500px; margin: 0 auto; padding: 15px; padding-bottom: 110px; }
@@ -28,56 +29,49 @@
         h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; }
 
         /* NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
-        .nav-btn { background: none; border: none; color: #475569; font-size: 0.6rem; font-weight: 800; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.2s; }
-        .nav-btn.active { color: white; }
-        .nav-btn .icon { font-size: 1.3rem; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(25px); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
+        .nav-btn { background: none; border: none; color: #475569; font-size: 0.65rem; font-weight: 800; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; flex: 1; }
+        .nav-btn.active { color: white; transform: translateY(-2px); }
+        .nav-btn .icon { font-size: 1.4rem; }
 
         .section { display: none; animation: fadeIn 0.3s ease-out; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .card { background: var(--card-bg); border-radius: 35px; padding: 22px; margin-bottom: 15px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .card-title { font-size: 0.85rem; font-weight: 950; text-transform: uppercase; margin-bottom: 15px; color: var(--dark); display: flex; justify-content: space-between; align-items: center; }
         
-        /* CHAT CENTER */
+        /* AUTH MODAL */
+        #auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; color: white; }
+        .google-btn { background: white; color: black; border: none; padding: 16px 24px; border-radius: 50px; font-weight: 800; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 0.9rem; box-shadow: 0 10px 30px rgba(255,255,255,0.1); transition: 0.2s; }
+        .google-btn:active { transform: scale(0.95); }
+
+        /* CHAT UI */
         .coach-card { background: linear-gradient(145deg, #1e293b 0%, #020617 100%); color: white; border-left: 8px solid var(--primary); overflow: hidden; }
         .chat-container { height: 350px; overflow-y: auto; background: rgba(0,0,0,0.4); border-radius: 25px; padding: 15px; font-size: 0.75rem; margin-bottom: 12px; color: #cbd5e1; line-height: 1.5; border: 1px solid rgba(255,255,255,0.1); scroll-behavior: smooth; }
         .chat-bubble { margin-bottom: 12px; padding: 12px; border-radius: 18px; border-left: 4px solid var(--primary); background: rgba(255,255,255,0.05); }
         .chat-bubble.user { border-left: none; border-right: 4px solid var(--indigo); background: rgba(37, 99, 235, 0.1); text-align: right; margin-left: 20px; }
-        .thinking-msg { font-size: 0.65rem; color: var(--primary); font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: none; }
-
-        /* TOOLS & SELECTORS */
-        .env-selector { display: flex; background: rgba(255,255,255,0.1); border-radius: 15px; padding: 4px; margin-bottom: 12px; }
-        .env-btn { flex: 1; padding: 10px; border-radius: 12px; border: none; background: none; color: #94a3b8; font-size: 0.6rem; font-weight: 900; cursor: pointer; }
-        .env-btn.active { background: white; color: var(--dark); }
-
-        .quick-ops { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px; scrollbar-width: none; }
-        .op-btn { flex-shrink: 0; padding: 10px 16px; border-radius: 14px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 0.6rem; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-
-        .tap-test-area { width: 100%; height: 90px; background: var(--dark); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: 900; cursor: pointer; position: relative; overflow: hidden; border: 2px solid var(--epi); margin-bottom: 10px; }
-        .tap-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: var(--secondary); width: 0%; transition: 0.1s linear; }
-
-        .mic-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); }
-        .mic-btn.recording { background: var(--danger); animation: pulseRed 1s infinite; }
-        @keyframes pulseRed { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .thinking-msg { font-size: 0.6rem; color: var(--primary); font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: none; }
 
         /* GYM ENGINE */
-        .protocol-selector { display: flex; gap: 6px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .protocol-selector { display: flex; gap: 6px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .proto-btn { flex-shrink: 0; padding: 10px 16px; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; font-size: 0.55rem; font-weight: 800; cursor: pointer; }
         .proto-btn.active { background: white; color: var(--dark); }
 
         .workout-day-card { background: #f8fafc; border-radius: 30px; padding: 20px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
-        .exercise-item { background: white; padding: 15px; border-radius: 22px; margin-bottom: 10px; border: 1px solid #f1f5f9; position: relative; }
         .set-box { height: 45px; border-radius: 15px; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 900; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
         .set-box.done { background: var(--secondary); border-color: var(--secondary); color: white; }
 
-        /* BIO MAP */
-        .anatomy-box { display: flex; justify-content: center; gap: 15px; align-items: center; }
-        .body-svg { width: 100px; height: auto; }
-        .muscle { fill: #cbd5e1; cursor: pointer; transition: 0.3s; }
-        .muscle.sore { fill: var(--pain) !important; }
+        .mic-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); flex-shrink: 0; }
+        .tap-test-area { width: 100%; height: 90px; background: var(--dark); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: 900; cursor: pointer; position: relative; overflow: hidden; border: 2px solid var(--epi); margin-bottom: 10px; }
+        .tap-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: var(--secondary); width: 0%; transition: 0.1s linear; }
 
         #setup-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark); z-index: 5000; display: none; padding: 40px; color: white; }
+        .input-group { background: rgba(255,255,255,0.08); padding: 12px; border-radius: 18px; margin-bottom: 10px; }
+        .input-group label { display: block; font-size: 0.5rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
+        .input-group input { width: 100%; border: none; background: transparent; color: white; font-size: 1.2rem; font-weight: 900; outline: none; }
+        
+        .btn-primary { width: 100%; padding: 18px; border-radius: 22px; border: none; background: var(--primary); color: white; font-weight: 900; cursor: pointer; font-size: 0.9rem; margin-top: 10px; }
         .timer-overlay { position: fixed; bottom: 105px; right: 20px; background: var(--dark); color: white; padding: 14px 24px; border-radius: 50px; border: 2px solid var(--primary); z-index: 2000; font-weight: 900; display: none; }
     </style>
 </head>
@@ -85,52 +79,62 @@
 
 <div id="rest-timer" class="timer-overlay">⏱️ <span id="t-min">01</span>:<span id="t-sec">30</span></div>
 
+<!-- AUTH OVERLAY (GOOGLE LOGIN) -->
+<div id="auth-overlay">
+    <h2 style="font-weight: 900; font-size: 2rem; margin-bottom: 10px;">APEX OMEGA</h2>
+    <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 40px;">Tu instancia soberana de inteligencia biológica.</p>
+    <button class="google-btn" id="login-btn" onclick="googleSignIn()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        CONECTAR CUENTA GOOGLE
+    </button>
+</div>
+
 <!-- SETUP MODAL -->
 <div id="setup-modal">
-    <h2 style="font-weight: 900; font-size: 1.8rem; margin-bottom: 20px; text-align: center;">APEX CONFIG</h2>
-    <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 30px; display: grid; gap: 15px;">
-        <div style="background:rgba(255,255,255,0.08); padding:12px; border-radius:18px;">
-            <label style="font-size:0.5rem; font-weight:900; color:#94a3b8;">PESO ACTUAL kg</label>
-            <input type="number" id="setup-w" value="80" style="width:100%; border:none; background:transparent; color:white; font-size:1.2rem; font-weight:900;">
+    <h2 style="font-weight: 900; font-size: 1.8rem; margin-bottom: 15px; text-align: center;">ÚLTIMO PASO</h2>
+    <p style="font-size: 0.7rem; color: #94a3b8; text-align: center; margin-bottom: 25px;">Sincroniza tus bases biométricas por primera vez.</p>
+    <div style="background: rgba(255,255,255,0.05); padding: 25px; border-radius: 30px; display: grid; gap: 5px;">
+        <div class="input-group">
+            <label>PESO ACTUAL kg</label>
+            <input type="number" id="setup-w" value="80" step="0.1">
         </div>
-        <div style="background:rgba(255,255,255,0.08); padding:12px; border-radius:18px;">
-            <label style="font-size:0.5rem; font-weight:900; color:#94a3b8;">GRASA % META</label>
-            <input type="number" id="setup-f" value="12" style="width:100%; border:none; background:transparent; color:white; font-size:1.2rem; font-weight:900;">
+        <div class="input-group">
+            <label>GRASA % ESTIMADA</label>
+            <input type="number" id="setup-f" value="15">
         </div>
-        <button onclick="finishSetup()" style="width:100%; padding:20px; border-radius:20px; border:none; background:var(--primary); color:white; font-weight:900;">ACTIVAR CEREBRO CHAT</button>
+        <button onclick="finishSetup()" class="btn-primary">ACTIVAR NÚCLEO</button>
     </div>
 </div>
 
 <div class="container">
-    <header><h1>⚡ APEX OMEGA</h1></header>
+    <header><h1>⚡ APEX CHAT AI</h1></header>
 
-    <!-- TAB: CHAT (CORE) -->
+    <!-- SECTION: CHAT -->
     <section id="lab" class="section active">
         <div class="card coach-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <div style="font-size:0.6rem; font-weight:900; color:var(--primary);" id="sync-info">● SOVEREIGN ONLINE</div>
-                <div id="time-badge" style="font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.4);">SINC: --:--</div>
+                <div style="font-size:0.6rem; font-weight:900; color:var(--secondary);" id="sync-info">● SOVEREIGN ONLINE</div>
+                <div id="user-display" style="font-size:0.6rem; font-weight:900; color:rgba(255,255,255,0.5);">ATLETA</div>
             </div>
 
-            <div class="env-selector">
-                <button class="env-btn active" id="env-home" onclick="setEnvironment('home')" style="flex: 1; padding: 10px; border-radius: 12px; border: none; background: white; color: var(--dark); font-size: 0.6rem; font-weight: 900; cursor: pointer;">🏠 CASA</button>
-                <button class="env-btn" id="env-street" onclick="setEnvironment('street')" style="flex: 1; padding: 10px; border-radius: 12px; border: none; background: none; color: #94a3b8; font-size: 0.6rem; font-weight: 900; cursor: pointer;">🏢 CALLE</button>
+            <div class="env-selector" style="display: flex; background: rgba(255,255,255,0.1); border-radius: 15px; padding: 4px; margin-bottom: 12px;">
+                <button class="env-btn active" id="env-home" onclick="setEnvironment('home')" style="flex: 1; padding: 10px; border-radius: 12px; border: none; background: white; color: var(--dark); font-size: 0.6rem; font-weight: 900;">🏠 CASA</button>
+                <button class="env-btn" id="env-street" onclick="setEnvironment('street')" style="flex: 1; padding: 10px; border-radius: 12px; border: none; background: none; color: #94a3b8; font-size: 0.6rem; font-weight: 900;">🏢 CALLE</button>
             </div>
 
             <div class="quick-ops">
-                <button class="op-btn" onclick="quickCommand('Chat, ¿qué toca hoy?')">📋 ¿QUÉ TOCA?</button>
+                <button class="op-btn" onclick="quickCommand('Chat, ¿qué me toca hoy?')">📋 ¿QUÉ TOCA?</button>
                 <button class="op-btn" onclick="quickCommand('Chat, tengo hambre')">🍕 HAMBRE</button>
-                <button class="op-btn" onclick="quickCommand('Chat, armame el plan 42K para X fecha')">🏃 PLAN 42K</button>
-                <button class="op-btn" onclick="quickCommand('Chat, lista de súper barata')">🛒 SÚPER</button>
+                <button class="op-btn" onclick="quickCommand('Chat, armame el plan 42K')">🏃 PLAN 42K</button>
             </div>
 
             <div class="tap-test-area" onclick="runTapTest()">
-                <span id="tap-msg" style="font-size:0.65rem;">🧠 SNC READINESS (Toca para medir)</span>
+                <span id="tap-msg" style="font-size:0.65rem;">🧠 SNC READINESS (Test Neural)</span>
                 <div class="tap-progress" id="tap-progress"></div>
             </div>
             
             <div class="chat-container" id="chat-box">
-                <div class="chat-bubble coach">Instancia Sovereign iniciada. <br><br>Dime tu actividad ("Chat, hoy corrí 10km") o pídeme ajustar tu sesión. Soy tu consultor híbrido con memoria total de tus metas.</div>
+                <div class="chat-bubble coach">Instancia Soberana iniciada. Bienvenido atleta. <br><br>Dime tu actividad física de hoy o pídeme ajustar tu sesión. Tu historial se guarda solo en tu cuenta de Google.</div>
             </div>
 
             <div id="thinking-indicator" class="thinking-msg">Calculando biomecánica y metabolismo...</div>
@@ -140,13 +144,15 @@
                 <button class="mic-btn" id="mic-btn" onclick="toggleSTT()">🎙️</button>
                 <button onclick="processChat()" style="background:var(--primary); color:white; border:none; padding:14px 20px; border-radius:18px; font-weight:900;">GO</button>
             </div>
+            
+            <button onclick="configAPIKey()" id="api-alert-btn" style="width:100%; background:var(--danger); color:white; border:none; border-radius:12px; padding:6px; font-size:0.5rem; font-weight:900; margin-top:10px; display:none;">CONFIGURAR GEMINI KEY</button>
         </div>
 
         <div class="card">
             <div class="card-title">👁️ Visión Cybernetic</div>
             <input type="file" id="image-upload" accept="image/*" style="display:none" onchange="handleVisualScan(event)">
             <div id="scan-preview" onclick="document.getElementById('image-upload').click()" style="width:100%; height:100px; background:#000; border-radius:24px; display:flex; align-items:center; justify-content:center; color:white; border:2px dashed var(--primary); cursor:pointer;">
-                <span style="font-size:0.6rem; font-weight:800;">Subir Plato o Técnica</span>
+                <span style="font-size:0.6rem; font-weight:800;">Subir Plato o Biometría</span>
             </div>
         </div>
     </section>
@@ -182,106 +188,152 @@
         </div>
 
         <div class="card">
-            <h2 class="card-title">🔐 Bóveda Apex (Mail)</h2>
-            <input type="email" id="user-email" placeholder="atleta@mail.com" style="width:100%; padding:14px; border-radius:18px; border:1px solid var(--border); margin-bottom:12px;">
-            <button onclick="syncCloud()" class="btn-primary" style="background:var(--dark)">CONECTAR IDENTIDAD</button>
+            <h2 class="card-title">👤 Perfil Google</h2>
+            <div style="font-size:0.75rem; margin-bottom:15px;" id="user-email-display">Cargando...</div>
+            <button onclick="signOutApex()" class="btn-primary" style="background:var(--dark)">CERRAR SESIÓN</button>
         </div>
         
         <div class="card">
-            <h2 class="card-title">Peso Diario kg</h2>
-            <input type="number" id="log-w" step="0.1" style="width:100%; padding:14px; border-radius:18px; border:1px solid var(--border); margin-bottom:10px;">
-            <button onclick="saveMedicion()" class="btn-primary" style="background:var(--accent)">EJECUTAR DIAGNÓSTICO</button>
+            <h2 class="card-title">Check-in de Peso</h2>
+            <input type="number" id="log-w" step="0.1" style="width:100%; padding:14px; border-radius:18px; border:2px solid var(--border); margin-bottom:10px;">
+            <button onclick="saveMedicion()" class="btn-primary" style="background:var(--accent)">EJECUTAR BIO-DASH</button>
+        </div>
+    </section>
+
+    <!-- SECTION: DIETA -->
+    <section id="nutrition" class="section">
+        <div class="card" style="background: #fefce8; border: 2px solid var(--accent); text-align:center;">
+            <div style="font-size:0.6rem; font-weight:900; color:#854d0e;">Meta Diaria Adaptativa</div>
+            <div style="font-size:2.2rem; font-weight:950; color:#854d0e;" id="kcal-display">2400</div>
         </div>
     </section>
 
     <!-- NAV -->
     <div class="bottom-nav">
-        <button class="nav-btn active" onclick="tab('lab')"><span class="icon">💬</span>Chat</button>
-        <button class="nav-btn" onclick="tab('workout')"><span class="icon">💪</span>Gym</button>
-        <button class="nav-btn" onclick="tab('bio')"><span class="icon">⚖️</span>Bio</button>
-        <button class="nav-btn" onclick="tab('nutrition')"><span class="icon">🥗</span>Dieta</button>
+        <button class="nav-btn active" onclick="tab(this, 'lab')"><span class="icon">💬</span>Chat</button>
+        <button class="nav-btn" onclick="tab(this, 'workout')"><span class="icon">💪</span>Gym</button>
+        <button class="nav-btn" onclick="tab(this, 'bio')"><span class="icon">⚖️</span>Bio</button>
+        <button class="nav-btn" onclick="tab(this, 'nutrition')"><span class="icon">🥗</span>Dieta</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = JSON.parse(__firebase_config);
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const apiKey = ""; 
-    const appId = "apex-sovereign-final-v3";
+    const provider = new GoogleAuthProvider();
+    const appId = "apex-sovereign-google-v1";
+    
+    let apiKey = ""; 
+    let user = null;
 
     window.state = {
         week: 1, activeProtocol: 'base', env: 'home',
         weights: { sq: 100, bp: 80, body: 0, h: 175, fCurr: 15, goal: 2400 },
         customRoutine: null, runPlan: null, hyroxPlan: null,
-        diary: [], bio: [], doneSets: {}, email: "", pain: [], setupDone: false, sncScore: 0
+        diary: [], doneSets: {}, pain: [], setupDone: false, sncScore: 0
     };
 
-    window.onload = async () => {
-        updateClock(); setInterval(updateClock, 30000);
-        const local = localStorage.getItem('apex_sovereign_final_v3');
-        if (local) {
-            window.state = JSON.parse(local);
-            if (window.state.email) await syncCloud();
+    // --- GOOGLE SIGN IN ENGINE ---
+    window.googleSignIn = async () => {
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (e) {
+            console.error("Login Error", e);
+            alert("Fallo en el enlace con Google.");
         }
-        if (!window.state.setupDone) document.getElementById('setup-modal').style.display = 'block';
+    };
+
+    window.signOutApex = () => signOut(auth);
+
+    onAuthStateChanged(auth, (u) => {
+        if (u) {
+            user = u;
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('user-display').innerText = u.displayName.toUpperCase();
+            document.getElementById('user-email-display').innerText = u.email;
+            
+            // Sync with Firestore
+            const userDoc = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+            onSnapshot(userDoc, (snap) => {
+                if (snap.exists()) {
+                    window.state = snap.data();
+                    if (!window.state.setupDone) document.getElementById('setup-modal').style.display = 'block';
+                    else document.getElementById('setup-modal').style.display = 'none';
+                    renderAll();
+                } else {
+                    document.getElementById('setup-modal').style.display = 'block';
+                }
+            }, (err) => console.error("Snapshot Error", err));
+
+        } else {
+            user = null;
+            document.getElementById('auth-overlay').style.display = 'flex';
+        }
+    });
+
+    window.onload = () => {
+        // API KEY MANAGEMENT
+        if (!apiKey) {
+            const savedKey = localStorage.getItem('apex_api_key');
+            if (savedKey) apiKey = savedKey;
+            else document.getElementById('api-alert-btn').style.display = 'block';
+        }
         renderAll();
     };
 
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('time-badge').innerText = `SINC: ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
-    }
+    window.configAPIKey = () => {
+        const key = prompt("Ingresa tu Gemini API Key:");
+        if (key) { apiKey = key; localStorage.setItem('apex_api_key', key); document.getElementById('api-alert-btn').style.display = 'none'; }
+    };
 
     function save() {
-        localStorage.setItem('apex_sovereign_final_v3', JSON.stringify(window.state));
-        if (window.state.email && auth.currentUser) {
-            const safe = window.state.email.replace(/[.@]/g, '_');
-            setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', safe), window.state);
-        }
+        if (!user) return;
+        const userDoc = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+        setDoc(userDoc, window.state);
     }
 
     window.finishSetup = () => {
-        window.state.weights.body = parseFloat(document.getElementById('setup-w').value);
-        window.state.weights.fCurr = parseFloat(document.getElementById('setup-f').value);
-        window.state.setupDone = true;
-        document.getElementById('setup-modal').style.display = 'none';
-        save(); renderAll();
+        const w = parseFloat(document.getElementById('setup-w').value);
+        const f = parseFloat(document.getElementById('setup-f').value);
+        if (w > 0) {
+            window.state.weights.body = w;
+            window.state.weights.fCurr = f;
+            window.state.setupDone = true;
+            save(); renderAll();
+        }
     };
 
-    window.renderAll = () => {
-        renderGym();
-        renderKPIs();
-        updatePainUI();
+    window.tab = (btn, id) => {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        const target = document.getElementById(id);
+        if (target) target.classList.add('active');
+        if (btn) btn.classList.add('active');
+        window.scrollTo(0, 0);
     };
 
     // PILLAR: SOVEREIGN CHAT CORE
     window.processChat = async () => {
+        if (!apiKey) return alert("Configura la API Key.");
         const input = document.getElementById('chat-input');
         const box = document.getElementById('chat-box');
         const thinking = document.getElementById('thinking-indicator');
         let query = input.value; if(!query) return;
 
         box.innerHTML += `<div class="chat-bubble user">${query}</div>`;
-        input.value = "";
-        box.scrollTop = box.scrollHeight;
+        input.value = ""; box.scrollTop = box.scrollHeight;
         thinking.style.display = "block";
 
-        const hr = new Date().getHours();
         const context = `ERES "CHAT", LA INSTANCIA SOBERANA DE IA DE ESTE ATLETA HÍBRIDO.
-        KNOWLEDGE: Gironda 8x8, Hyrox, 42K Endurance, DUP, Wendler 5/3/1, Saciedad Argentina, TDEE Dinámico.
-        CONTEXTO ATLETA: ${window.state.weights.body}kg, ${window.state.weights.fCurr}% grasa. SNC: ${window.state.sncScore}. Entorno: ${window.state.env}. Hora: ${hr}hs.
-        HORARIOS COMIDA ATLETA: Desayuno (8-9), Almuerzo (13-14), Merienda (17-19), Cena (21-23).
-        REGLAS:
-        1. Memoria: Conoces al atleta. No pidas datos que ya tienes.
-        2. Actividad: Si reporta futbol/running/correr, regístralo como gasto calórico. 
-        3. Hambre: Comida real barata argentina cruzando hora con ventana circadiana.
-        4. Tono: Fuente de verdad científica, técnico, veloz y motivador.`;
+        ATLETA: ${user.displayName}, ${window.state.weights.body}kg, ${window.state.weights.fCurr}% grasa. SNC: ${window.state.sncScore}. Entorno: ${window.state.env}.
+        KNOWLEDGE: Gironda 8x8, Hyrox, 42K Endurance, DUP, Wendler, Saciedad Argentina, TDEE Dinámico.
+        REGLAS: Responde técnico, motivador, directo y veloz.`;
 
         try {
             const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
@@ -294,39 +346,28 @@
             box.innerHTML += `<div class="chat-bubble coach">${reply}</div>`;
             box.scrollTop = box.scrollHeight;
             speakResponse(reply);
-
-            if(reply.includes("Confirmar")) {
-                let type = query.toLowerCase().includes("42k") ? 'run' : (query.toLowerCase().includes("hyrox") ? 'hyrox' : 'custom');
-                window.pendingUpdate = { type, content: reply };
-            }
-        } catch (e) { thinking.style.display = "none"; box.innerHTML += `<div class="chat-bubble coach">Chat: Error neural.</div>`; }
+        } catch (e) { thinking.style.display = "none"; box.innerHTML += `<div class="chat-bubble coach" style="color:var(--danger)">Error de enlace.</div>`; }
     };
 
     window.quickCommand = (cmd) => { document.getElementById('chat-input').value = cmd; window.processChat(); };
 
-    // PILLAR: GYM ENGINE
+    // PILLAR: GYM
     function renderGym() {
         const container = document.getElementById('gym-render');
         const p = window.state.activeProtocol;
-        if(p === 'run' && window.state.runPlan) { container.innerHTML = `<div class="workout-day-card" style="white-space:pre-wrap; font-size:0.7rem;">${window.state.runPlan.split("Confirmar")[0]}</div>`; return; }
-        if(p === 'hyrox' && window.state.hyroxPlan) { container.innerHTML = `<div class="workout-day-card" style="white-space:pre-wrap; font-size:0.7rem;">${window.state.hyroxPlan.split("Confirmar")[0]}</div>`; return; }
-
-        const sets = ((window.state.week-1)%5 === 4) ? 4 : 5 + ((window.state.week-1)%5);
+        if(p === 'run' && window.state.runPlan) { container.innerHTML = `<div class="workout-day-card" style="white-space:pre-wrap; font-size:0.7rem; border-left:4px solid var(--run);">${window.state.runPlan}</div>`; return; }
+        const sets = 5;
         const days = [{id:'sq', n:'D1: Piernas (8x8)'}, {id:'bp', n:'D2: Mirror (8x8)'}];
         container.innerHTML = days.map(day => `
-            <div class="workout-day-card">
-                <h3>${day.n}</h3>
-                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:12px;">
-                    ${Array(sets).fill().map((_,i) => `<div class="set-box ${window.state.doneSets[day.id+i] ? 'done' : ''}" onclick="toggleSet('${day.id+i}')">${i+1}</div>`).join('')}
-                </div>
-            </div>`).join('');
+            <div class="workout-day-card"><h3>${day.n}</h3><div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:12px;">
+                ${Array(sets).fill().map((_,i) => `<div class="set-box ${window.state.doneSets[day.id+i] ? 'done' : ''}" onclick="toggleSet('${day.id+i}')">${i+1}</div>`).join('')}
+            </div></div>`).join('');
     }
 
-    window.toggleSet = (k) => { window.state.doneSets[k] = !window.state.doneSets[k]; if(window.state.doneSets[k]) startRest(); save(); renderGym(); checkCompletion(); };
-    function startRest() { document.getElementById('rest-timer').style.display='block'; let t = 90; if(window.ti) clearInterval(window.ti); window.ti = setInterval(() => { t--; document.getElementById('t-min').innerText = Math.floor(t/60).toString().padStart(2,'0'); document.getElementById('t-sec').innerText = (t%60).toString().padStart(2,'0'); if(t<=0){clearInterval(window.ti); document.getElementById('rest-timer').style.display='none';} }, 1000); }
-    function checkCompletion() { const done = Object.values(window.state.doneSets).filter(v => v).length; if(done === 10 || done === 16) { window.tab('lab'); window.quickCommand("Chat, terminé mi sesión. ¿Qué toca comer ahora?"); } }
+    window.toggleSet = (k) => { window.state.doneSets[k] = !window.state.doneSets[k]; if(window.state.doneSets[k]) startRest(); save(); renderGym(); };
+    function startRest() { document.getElementById('rest-timer').style.display='block'; let t = 90; const ti = setInterval(() => { t--; document.getElementById('t-min').innerText = Math.floor(t/60).toString().padStart(2,'0'); document.getElementById('t-sec').innerText = (t%60).toString().padStart(2,'0'); if(t<=0){clearInterval(ti); document.getElementById('rest-timer').style.display='none';} }, 1000); }
 
-    // PILLAR: SNC TAP TEST
+    // PILLAR: SNC TAP
     let tapCount = 0, tapActive = false;
     window.runTapTest = () => {
         if(tapActive) { tapCount++; return; }
@@ -336,25 +377,8 @@
         let time = 0;
         const int = setInterval(() => {
             time += 100; prog.style.width = (time/5000)*100 + "%";
-            if(time >= 5000) { clearInterval(int); tapActive = false; window.state.sncScore = tapCount; msg.innerText = `SNC SCORE: ${tapCount}`; prog.style.width = "0%"; quickCommand(`Chat, mi SNC Score hoy fue de ${tapCount}. Analiza mi readiness.`); save(); }
+            if(time >= 5000) { clearInterval(int); tapActive = false; window.state.sncScore = tapCount; msg.innerText = `SNC SCORE: ${tapCount}`; prog.style.width = "0%"; quickCommand(`Chat, mi SNC Score fue ${tapCount}. Analiza.`); save(); }
         }, 100);
-    };
-
-    // SYNC & BIO
-    window.syncCloud = async () => {
-        const email = document.getElementById('user-email').value;
-        if(email.includes('@')) {
-            window.state.email = email;
-            try {
-                await signInAnonymously(auth);
-                const safe = email.replace(/[.@]/g, '_');
-                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', safe));
-                if(snap.exists()) window.state = snap.data();
-                window.state.setupDone = true;
-                save(); renderAll();
-                document.getElementById('sync-info').innerText = "● SOVEREIGN LINKED";
-            } catch(e) {}
-        }
     };
 
     function renderKPIs() {
@@ -363,8 +387,10 @@
         document.getElementById('kpi-muscle').innerText = `${musc} kg`;
         document.getElementById('kpi-fat').innerText = `${f} %`;
         document.getElementById('ffmi-val').innerText = `FFMI: ${(musc / Math.pow(h/100, 2)).toFixed(1)}`;
+        document.getElementById('kcal-display').innerText = window.state.weights.goal;
     }
 
+    // --- AUDIO profesional ---
     async function speakResponse(text) {
         try {
             const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
@@ -372,18 +398,32 @@
                 body: JSON.stringify({ contents: [{ parts: [{ text: text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } }, model: "gemini-2.5-flash-preview-tts" })
             });
             const data = await resp.json();
-            const binary = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-            if(binary) new Audio(URL.createObjectURL(new Blob([new Uint8Array(atob(binary).split("").map(c => c.charCodeAt(0)))], { type: 'audio/wav' }))).play();
+            const b64 = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+            if(b64) {
+                const binary = atob(b64);
+                const bytes = new Uint8Array(binary.length);
+                for (let i=0; i<binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                new Audio(URL.createObjectURL(new Blob([bytes], { type: 'audio/wav' }))).play();
+            }
         } catch(e) {}
     }
 
-    // UTILS
-    window.tab = (id) => { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); event.currentTarget.classList.add('active'); };
-    window.setProtocol = (p) => { window.state.activeProtocol = p; ['base','run','hyrox','custom'].forEach(id => { if(document.getElementById('btn-'+id)) document.getElementById('btn-'+id).classList.toggle('active', id===p); }); save(); renderGym(); };
-    window.setEnvironment = (e) => { window.state.env = e; document.getElementById('env-home').style.background = e==='home' ? 'white' : 'none'; document.getElementById('env-home').style.color = e==='home' ? 'var(--dark)' : '#94a3b8'; document.getElementById('env-street').style.background = e==='street' ? 'white' : 'none'; document.getElementById('env-street').style.color = e==='street' ? 'var(--dark)' : '#94a3b8'; save(); };
-    window.handleVisualScan = (e) => { const reader = new FileReader(); reader.onloadend = () => { window.state.currentBase64 = reader.result.split(',')[1]; document.getElementById('scan-preview').innerHTML = `<img src="${reader.result}" style="width:100%; height:100%; object-fit:cover;">`; runIAVision(); }; reader.readAsDataURL(e.target.files[0]); };
-    async function runIAVision() { const box = document.getElementById('chat-box'); box.innerHTML += `<div class="chat-bubble coach">IA analizando píxeles híbridos...</div>`; try { const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [ { text: "Analiza técnica o macros. Sé breve y científico." }, { inlineData: { mimeType: "image/png", data: window.state.currentBase64 } } ] }] }) }); const data = await resp.json(); box.innerHTML += `<div class="chat-bubble coach">${data.candidates[0].content.parts[0].text}</div>`; box.scrollTop = box.scrollHeight; } catch (e) {} };
-    window.toggleSTT = () => { const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); rec.lang = 'es-AR'; const btn = document.getElementById('mic-btn'); btn.classList.add('recording'); rec.onresult = (e) => { document.getElementById('chat-input').value = e.results[0][0].transcript; btn.classList.remove('recording'); window.processChat(); }; rec.onerror = () => btn.classList.remove('recording'); rec.start(); };
+    window.toggleSTT = () => {
+        const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        rec.lang = 'es-AR'; const btn = document.getElementById('mic-btn');
+        btn.classList.add('recording');
+        rec.onresult = (e) => { document.getElementById('chat-input').value = e.results[0][0].transcript; btn.classList.remove('recording'); window.processChat(); };
+        rec.start();
+    };
+
+    window.setProtocol = (p) => { window.state.activeProtocol = p; save(); renderGym(); };
+    window.setEnvironment = (e) => { window.state.env = e; document.querySelectorAll('.env-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); save(); };
+    window.handleVisualScan = (e) => {
+        const reader = new FileReader();
+        reader.onloadend = () => { window.state.currentBase64 = reader.result.split(',')[1]; runIAVision(); };
+        reader.readAsDataURL(e.target.files[0]);
+    };
+    async function runIAVision() { const box = document.getElementById('chat-box'); box.innerHTML += `<div class="chat-bubble coach">Escaneando...</div>`; try { const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: [{ role: "user", parts: [ { text: "Analiza técnica o macros. Sé breve." }, { inlineData: { mimeType: "image/png", data: window.state.currentBase64 } } ] }] }) }); const data = await resp.json(); box.innerHTML += `<div class="chat-bubble coach">${data.candidates[0].content.parts[0].text}</div>`; box.scrollTop = box.scrollHeight; } catch (e) {} };
     window.togglePain = (m) => { const i = window.state.pain.indexOf(m); if(i > -1) window.state.pain.splice(i,1); else window.state.pain.push(m); save(); renderAll(); };
     function updatePainUI() { ['neck', 'chest', 'arms', 'legs'].forEach(id => { const el = document.getElementById(`heat-${id}`); if(el) { const zone = id.includes('arms') ? 'brazos' : id.includes('legs') ? 'piernas' : id === 'neck' ? 'cuello' : 'pecho'; el.classList.toggle('sore', window.state.pain.includes(zone)); } }); }
     window.saveMedicion = () => { window.state.weights.body = parseFloat(document.getElementById('log-w').value) || window.state.weights.body; save(); renderAll(); alert("KPI Sincronizado."); };
